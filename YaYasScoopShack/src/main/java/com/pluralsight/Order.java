@@ -75,6 +75,9 @@ public class Order {
         System.out.println("Order canceled.");
     }
 
+    public CharSequence getIceCream() {
+        return null;
     }
+}
 
 
