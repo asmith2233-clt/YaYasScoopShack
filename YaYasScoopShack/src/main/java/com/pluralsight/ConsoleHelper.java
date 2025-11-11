@@ -3,33 +3,41 @@ package com.pluralsight;
 import java.util.Scanner;
 
 public class ConsoleHelper {
-    private static final Scanner scanner = new Scanner(System.in);
 
-    public static String readString(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine().trim();
-    }
-
-    public static int readInt(String prompt) {
+    // Reads an integer safely
+    public static int readInt(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt);
-            String input = scanner.nextLine().trim();
             try {
+                String input = scanner.nextLine().trim();
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("⚠️ Invalid input. Please enter a number.");
+                System.out.println("❗ Invalid number, try again.");
             }
         }
     }
 
-    public static boolean readYesNo(String prompt) {
+    // Reads a double safely (handles "$6" or "6.00")
+    public static double readDouble(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                String input = scanner.nextLine().replace("$", "").trim();
+                return Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("❗ Please enter a valid amount (like 3.50).");
+            }
+        }
+    }
+
+    // Reads a yes/no answer
+    public static boolean readYesNo(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt + " (yes/no): ");
-            String input = scanner.nextLine().trim().toLowerCase();
-            if (input.equals("yes") || input.equals("y")) return true;
-            if (input.equals("no") || input.equals("n")) return false;
-            System.out.println("⚠️ Please enter yes or no.");
+            String answer = scanner.nextLine().trim().toLowerCase();
+            if (answer.equals("yes") || answer.equals("y")) return true;
+            if (answer.equals("no") || answer.equals("n")) return false;
+            System.out.println("❗ Please answer yes or no.");
         }
     }
 }
-
