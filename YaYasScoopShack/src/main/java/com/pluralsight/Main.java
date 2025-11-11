@@ -1,9 +1,11 @@
 package com.pluralsight;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.util.Scanner;
 
 public class Main {
+
+    private static final double SALES_TAX_RATE = 0.07;
+
     public static void main(String[] args) {
         System.out.println("🍦 Welcome to Ya Ya’s Scoop Shack! 🍦");
         boolean running = true;
@@ -26,7 +28,7 @@ public class Main {
         }
     }
 
-    // === Start a new order ===
+    // === Start New Order ===
     public static void startNewOrder() {
         Order order = new Order();
         boolean ordering = true;
@@ -63,8 +65,7 @@ public class Main {
     // === Add Ice Cream ===
     public static void addIceCream(Order order) {
         System.out.println("\n=== Add Ice Cream ===");
-        String flavor = ConsoleHelper.readString(
-                "Enter flavor (Vanilla Bean, Chocolate Fudge, Strawberry Swirl, Mint Chocolate Chip): ");
+        String flavor = ConsoleHelper.readString("Enter flavor (Vanilla Bean, Chocolate Fudge, Strawberry Swirl, Mint Chocolate Chip): ");
         String size = ConsoleHelper.readString("Enter size (Cup, Pint, Quart): ");
 
         double basePrice = switch (size.toLowerCase()) {
@@ -76,28 +77,23 @@ public class Main {
 
         IceCream iceCream = new IceCream(flavor, size, basePrice);
 
-        // Premium toppings
-        if (ConsoleHelper.readYesNo("Would you like to add premium toppings?")) {
+        if (ConsoleHelper.readYesNo("Add premium toppings?")) {
             while (true) {
-                String topping = ConsoleHelper.readString(
-                        "Enter topping (Brownie Bites, Cookie Dough Chunks, Cheesecake Pieces, Caramel Drizzle or 'done'): ");
+                String topping = ConsoleHelper.readString("Enter premium topping (or 'done'): ");
                 if (topping.equalsIgnoreCase("done")) break;
                 iceCream.addPremiumTopping(topping, 0.75);
             }
         }
 
-        // Regular toppings
-        if (ConsoleHelper.readYesNo("Would you like to add regular toppings?")) {
+        if (ConsoleHelper.readYesNo("Add regular toppings?")) {
             while (true) {
-                String topping = ConsoleHelper.readString(
-                        "Enter topping (Sprinkles, Whipped Cream, Cherries, Crushed Oreos, Peanuts, Marshmallows or 'done'): ");
+                String topping = ConsoleHelper.readString("Enter regular topping (or 'done'): ");
                 if (topping.equalsIgnoreCase("done")) break;
                 iceCream.addRegularTopping(topping);
             }
         }
 
-        // Specialized
-        if (ConsoleHelper.readYesNo("Would you like the ice cream specialized?")) {
+        if (ConsoleHelper.readYesNo("Make it specialized (+ $1.00)?")) {
             iceCream.setSpecialized(true);
         }
 
@@ -110,7 +106,7 @@ public class Main {
         System.out.println("\n=== Add Drink ===");
         Drink.showDrinkMenu();
 
-        String drinkName = ConsoleHelper.readString("Enter drink (Bottled Water, Soda, Iced Coffee, Lemonade): ");
+        String drinkName = ConsoleHelper.readString("Enter drink: ");
         String size = ConsoleHelper.readString("Enter size (Small, Medium, Large): ");
 
         double price = Drink.getPriceFor(drinkName, size);
@@ -123,7 +119,7 @@ public class Main {
         System.out.println("\n=== Add Cookie ===");
         Cookie.showCookieMenu();
 
-        String type = ConsoleHelper.readString("Enter cookie type (Chocolate Chip, Sugar Cookie, Peanut Butter, Snickerdoodle): ");
+        String type = ConsoleHelper.readString("Enter cookie type: ");
         String quantity = ConsoleHelper.readString("Enter quantity (Each, Half Dozen, Dozen): ");
 
         double price = Cookie.getPriceFor(type, quantity);
@@ -136,8 +132,7 @@ public class Main {
         System.out.println("\n=== Add Milkshake ===");
         Milkshake.showMilkshakeMenu();
 
-        String flavor = ConsoleHelper.readString(
-                "Enter milkshake flavor (Classic Vanilla, Chocolate Delight, Strawberry Dream, Cookies & Cream): ");
+        String flavor = ConsoleHelper.readString("Enter flavor: ");
         String size = ConsoleHelper.readString("Enter size (Small, Medium, Large): ");
 
         double price = Milkshake.getPriceFor(flavor, size);
@@ -150,31 +145,25 @@ public class Main {
         System.out.println("\n=== CHECKOUT ===");
         order.displayOrder();
 
+        double subtotal = order.calculateTotal();
+        double tax = subtotal * SALES_TAX_RATE;
+        double totalWithTax = subtotal + tax;
+
+        System.out.printf("%nSubtotal: $%.2f%nTax (7%%): $%.2f%nTotal: $%.2f%n", subtotal, tax, totalWithTax);
+
         if (ConsoleHelper.readYesNo("Confirm order?")) {
-            try {
-                File folder = new File("receipts");
-                if (!folder.exists()) folder.mkdir();
+            double amountPaid = 0;
+            do {
+                amountPaid = ConsoleHelper.readInt("Enter amount paid (e.g. 10 for $10.00): ");
+                if (amountPaid < totalWithTax)
+                    System.out.println("⚠️ That’s not enough to cover the total.");
+            } while (amountPaid < totalWithTax);
 
-                String fileName = "receipts/receipt_" + System.currentTimeMillis() + ".txt";
-                FileWriter writer = new FileWriter(fileName);
-
-                writer.write("=========================================\n");
-                writer.write("        Ya Ya's Scoop Shack Receipt      \n");
-                writer.write("=========================================\n\n");
-
-                order.writeReceipt(writer);
-
-                writer.write("=========================================\n");
-                writer.write(String.format("TOTAL PRICE: $%.2f\n", order.calculateTotal()));
-                writer.write("=========================================\n");
-                writer.write("Thank you for visiting Ya Ya’s Scoop Shack!\n");
-
-                writer.close();
-
+            String fileName = ReceiptFileManager.saveReceipt(order, amountPaid);
+            if (fileName != null)
                 System.out.println("✅ Order confirmed! Receipt saved to: " + fileName);
-            } catch (Exception e) {
-                System.out.println("⚠️ Error saving receipt: " + e.getMessage());
-            }
+            else
+                System.out.println("⚠️ Error saving receipt.");
         } else {
             order.cancelOrder();
         }
