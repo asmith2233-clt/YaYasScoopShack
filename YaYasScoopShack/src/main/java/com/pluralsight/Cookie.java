@@ -1,7 +1,5 @@
 package com.pluralsight;
 
-import java.util.Scanner;
-
 public class Cookie extends Item {
     private String quantity;
 
@@ -10,22 +8,21 @@ public class Cookie extends Item {
         this.quantity = quantity;
     }
 
-    public static Cookie createFromInput(Scanner scanner) {
-        System.out.println(Order.BROWN + "=== Add Cookie ===" + Order.RESET);
-        System.out.print(Order.BROWN + "Cookie type (Chocolate Chip, Sugar Cookie, Peanut Butter, Snickerdoodle): " + Order.RESET);
-        String type = scanner.nextLine();
+    public static void showCookieMenu() {
+        System.out.println("🍪 Cookies:");
+        System.out.println("Chocolate Chip, Sugar Cookie, Peanut Butter, Snickerdoodle");
+        System.out.println("Quantities: Each, Half Dozen, Dozen");
+    }
 
-        System.out.print(Order.BROWN + "Quantity (Each, Half Dozen, Dozen): " + Order.RESET);
-        String qty = scanner.nextLine();
+    public static double getPriceFor(String type, String quantity) {
+        quantity = quantity.toLowerCase();
 
-        double price = switch (qty.toLowerCase()) {
+        return switch (quantity) {
             case "each" -> 1.50;
             case "half dozen" -> 7.50;
             case "dozen" -> 14.00;
-            default -> 0.0;
+            default -> 1.50; // default to single cookie
         };
-
-        return new Cookie(type, qty, price);
     }
 
     @Override
@@ -33,5 +30,4 @@ public class Cookie extends Item {
         return Order.BROWN + quantity + " " + name + Order.RESET + String.format(" - $%.2f", price);
     }
 }
-
 

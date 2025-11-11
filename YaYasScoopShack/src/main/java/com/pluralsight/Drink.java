@@ -1,7 +1,5 @@
 package com.pluralsight;
 
-import java.util.Scanner;
-
 public class Drink extends Item {
     private String size;
 
@@ -10,22 +8,36 @@ public class Drink extends Item {
         this.size = size;
     }
 
-    public static Drink createFromInput(Scanner scanner) {
-        System.out.println(Order.CYAN + "=== Add Drink ===" + Order.RESET);
-        System.out.print(Order.CYAN + "Drink flavor (Bottled Water, Soda, Iced Coffee, Lemonade): " + Order.RESET);
-        String name = scanner.nextLine();
+    public static void showDrinkMenu() {
+        System.out.println("🥤 Drinks:");
+        System.out.println("Bottled Water, Soda, Iced Coffee, Lemonade");
+    }
 
-        System.out.print(Order.CYAN + "Size (Small, Medium, Large): " + Order.RESET);
-        String size = scanner.nextLine();
+    // Fixed switch expression to remove IDE warning
+    public static double getPriceFor(String drinkName, String size) {
+        drinkName = drinkName.toLowerCase();
+        size = size.toLowerCase();
 
-        double price = switch (size.toLowerCase()) {
-            case "small" -> 1.50;
-            case "medium" -> 2.00;
-            case "large" -> 2.50;
-            default -> 0.0;
-        };
-
-        return new Drink(name, size, price);
+        switch (drinkName) {
+            case "bottled water":
+            case "soda":
+            case "lemonade":
+                return switch (size) {
+                    case "small" -> 2.00;
+                    case "medium" -> 2.50;
+                    case "large" -> 3.00;
+                    default -> 2.00;
+                };
+            case "iced coffee":
+                return switch (size) {
+                    case "small" -> 2.50;
+                    case "medium" -> 3.00;
+                    case "large" -> 3.50;
+                    default -> 2.50;
+                };
+            default:
+                return 2.00; // fallback price
+        }
     }
 
     @Override
@@ -33,4 +45,3 @@ public class Drink extends Item {
         return Order.CYAN + size + " " + name + Order.RESET + String.format(" - $%.2f", price);
     }
 }
-

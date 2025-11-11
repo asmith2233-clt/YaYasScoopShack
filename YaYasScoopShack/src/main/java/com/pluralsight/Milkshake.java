@@ -1,7 +1,5 @@
 package com.pluralsight;
 
-import java.util.Scanner;
-
 public class Milkshake extends Item {
     private String size;
 
@@ -10,22 +8,20 @@ public class Milkshake extends Item {
         this.size = size;
     }
 
-    public static Milkshake createFromInput(Scanner scanner) {
-        System.out.println(Order.CREAM + "=== Add Milkshake ===" + Order.RESET);
-        System.out.print(Order.CREAM + "Flavor (Classic Vanilla, Chocolate Delight, Strawberry Dream, Cookies & Cream): " + Order.RESET);
-        String flavor = scanner.nextLine();
+    public static void showMilkshakeMenu() {
+        System.out.println("🥤 Milkshakes:");
+        System.out.println("Classic Vanilla, Chocolate Delight, Strawberry Dream, Cookies & Cream");
+    }
 
-        System.out.print(Order.CREAM + "Size (Small, Medium, Large): " + Order.RESET);
-        String size = scanner.nextLine();
+    public static double getPriceFor(String flavor, String size) {
+        size = size.toLowerCase();
 
-        double price = switch (size.toLowerCase()) {
-            case "small" -> 3.50;
+        return switch (size) {
+            case "small" -> 4.50;
             case "medium" -> 5.50;
-            case "large" -> 7.50;
-            default -> 0.0;
+            case "large" -> 6.50;
+            default -> 4.50; // default to small
         };
-
-        return new Milkshake(flavor, size, price);
     }
 
     @Override
@@ -33,7 +29,3 @@ public class Milkshake extends Item {
         return Order.CREAM + size + " " + name + Order.RESET + String.format(" - $%.2f", price);
     }
 }
-
-
-
-
