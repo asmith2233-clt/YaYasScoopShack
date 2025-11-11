@@ -22,17 +22,14 @@ public class SignatureItem extends IceCream {
         };
     }
 
-    // Allows free customization for SignatureItem
     public void customize(Scanner scanner) {
-        System.out.println(Order.BROWN + "Customize toppings (type 'done' when finished):" + Order.RESET);
+        System.out.println("Add or remove toppings (type 'done' when finished):");
         while (true) {
-            System.out.print(Order.CREAM + "Add topping: " + Order.RESET);
+            System.out.print("Topping: ");
             String t = scanner.nextLine();
             if (t.equalsIgnoreCase("done")) break;
-            addCustomTopping(t); // <- now works perfectly
+            addRegularTopping(t); // Use IceCream method to add topping
         }
     }
 }
-
-
 
