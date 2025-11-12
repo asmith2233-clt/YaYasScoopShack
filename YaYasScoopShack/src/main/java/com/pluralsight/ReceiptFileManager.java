@@ -13,43 +13,43 @@ public class ReceiptFileManager {
 
         try (FileWriter writer = new FileWriter(filename)) {
 
-            // 🎀 Header
+            // Header
             writer.write("""
                     ╔════════════════════════════════════════════╗
                     ║         🍦  YA YA’S SCOOP SHACK  🍦        ║
                     ║        "Where Every Bite Feels Just Right" ║
                     ╚════════════════════════════════════════════╝
-                    
+
                     """);
 
-            // 🕒 Date and Time of Purchase
+            // Date & Time
             writer.write("Date: " + now.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")) + "\n");
             writer.write("Time: " + now.format(DateTimeFormatter.ofPattern("hh:mm a")) + "\n");
             writer.write("──────────────────────────────────────────\n");
             writer.write("Order Receipt\n");
             writer.write("──────────────────────────────────────────\n");
 
-            // 🧁 Ordered Items
+            // Items
             for (IceCream i : order.getIceCreams())
-                writer.write(formatLine(i.getDescription()));
+                writer.write(formatLine(stripColors(i.getDescription())));
             for (Drink d : order.getDrinks())
-                writer.write(formatLine(d.getDescription()));
+                writer.write(formatLine(stripColors(d.getDescription())));
             for (Cookie c : order.getCookies())
-                writer.write(formatLine(c.getDescription()));
+                writer.write(formatLine(stripColors(c.getDescription())));
             for (Milkshake m : order.getMilkshakes())
-                writer.write(formatLine(m.getDescription()));
+                writer.write(formatLine(stripColors(m.getDescription())));
 
             writer.write("──────────────────────────────────────────\n");
-            writer.write(String.format("%-30s %10s%n", "TOTAL:", String.format("$%.2f", order.calculateTotal())));
+            writer.write(String.format("%-35s %8s%n", "TOTAL:", String.format("$%.2f", order.calculateTotal())));
             writer.write("──────────────────────────────────────────\n\n");
 
             // Footer
             writer.write("""
                     🍧 Thank you for visiting Ya Ya’s Scoop Shack! 🍧
                     Come back soon for another sweet treat! 🍓🍫🍪
-                    
-                    Keep Your Receipt and you get 50% OFF yur NEXT PURCHASE!!!
-                    
+
+                    Keep Your Receipt and you get 50% OFF your NEXT PURCHASE!!!
+
                     📍 123 Sundae Lane
                     ☎️  (555) SCOOP-IT
                     💕  www.YaYasScoopShack.com
@@ -58,19 +58,24 @@ public class ReceiptFileManager {
             System.out.println("Receipt saved to " + filename);
 
         } catch (IOException e) {
-            System.out.println(" Error saving receipt: " + e.getMessage());
+            System.out.println("Error saving receipt: " + e.getMessage());
         }
     }
 
-    // Helper method to format each line neatly
+    // Format item description with aligned price
     private static String formatLine(String description) {
         int priceIndex = description.lastIndexOf("$");
         if (priceIndex > 0) {
             String item = description.substring(0, priceIndex).trim();
             String price = description.substring(priceIndex).trim();
-            return String.format("%-30s %10s%n", item, price);
+            return String.format("%-35s %8s%n", item, price);
         } else {
             return description + "\n";
         }
+    }
+
+    // Remove all ANSI escape sequences (colors)
+    private static String stripColors(String text) {
+        return text.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 }

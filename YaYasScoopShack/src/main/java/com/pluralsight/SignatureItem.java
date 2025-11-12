@@ -20,7 +20,7 @@ public class SignatureItem extends IceCream {
     public static SignatureItem createSignature(int choice) {
         return switch (choice) {
             case 1 -> {
-                SignatureItem item = new SignatureItem("Banana Split Boat", "Boat", 7.50);
+                SignatureItem item = new SignatureItem("Banana Split Boat", "Cup", 7.50);
                 item.addRegularTopping("Whipped Cream");
                 item.addRegularTopping("Peanuts");
                 yield item;
