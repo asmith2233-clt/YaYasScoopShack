@@ -1,6 +1,6 @@
 package com.pluralsight;
 
-public abstract class Item {
+public class Item {
     protected String name;
     protected double price;
 
@@ -9,7 +9,11 @@ public abstract class Item {
         this.price = price;
     }
 
-    public abstract String getDescription();
+    public String getDescription() {
+        return name + String.format(" - $%.2f", price);
+    }
+
     public double getPrice() { return price; }
 }
+
 

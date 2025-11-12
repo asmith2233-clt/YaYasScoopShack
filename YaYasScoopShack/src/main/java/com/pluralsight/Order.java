@@ -1,8 +1,5 @@
 package com.pluralsight;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -68,36 +65,11 @@ public class Order {
     // === Checkout ===
     public void checkout(Scanner scanner) {
         displayOrder(); // keeps colored console output
+
         if (ConsoleHelper.readYesNo(scanner, "Confirm order?")) {
-            try {
-                File folder = new File("receipts");
-                if (!folder.exists()) folder.mkdir();
-
-                String filename = "receipts/receipt_" + System.currentTimeMillis() + ".txt";
-                FileWriter writer = new FileWriter(filename);
-
-                writer.write("🍦 YA YA’S SCOOP SHACK RECEIPT 🍦\n");
-                writer.write("--------------------------------------\n");
-
-                for (IceCream i : iceCreams)
-                    writer.write("- " + stripColors(i.getDescription()) + "\n");
-                for (Drink d : drinks)
-                    writer.write("- " + stripColors(d.getDescription()) + "\n");
-                for (Cookie c : cookies)
-                    writer.write("- " + stripColors(c.getDescription()) + "\n");
-                for (Milkshake m : milkshakes)
-                    writer.write("- " + stripColors(m.getDescription()) + "\n");
-
-                writer.write("--------------------------------------\n");
-                writer.write(String.format("TOTAL: $%.2f%n", calculateTotal()));
-                writer.write("Thank you for visiting Ya Ya’s Scoop Shack!\n");
-
-                writer.close();
-
-                System.out.println(PINK + "✅ Order confirmed! Receipt saved to: " + filename + RESET);
-            } catch (IOException e) {
-                System.out.println("❗ Error saving receipt: " + e.getMessage());
-            }
+            System.out.println(PINK + "✅ Order confirmed!" + RESET);
+            //  Use the fancy receipt manager instead of writing plain text
+            ReceiptFileManager.saveReceipt(this);
         } else {
             cancelOrder();
         }

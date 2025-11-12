@@ -5,13 +5,13 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("🍦 Welcome to Ya Ya’s Scoop Shack! 🍦");
+        System.out.println(Order.PINK + "🍦 Welcome to Ya Ya’s Scoop Shack! 🍦" + Order.RESET);
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
-            System.out.println("\n=== HOME SCREEN ===");
+            System.out.println(Order.CYAN + "\n=== HOME SCREEN ===" + Order.RESET);
             System.out.println("1) New Order");
             System.out.println("0) Exit");
 
@@ -20,7 +20,7 @@ public class Main {
             switch (choice) {
                 case 1 -> startNewOrder(scanner);
                 case 0 -> {
-                    System.out.println("Thank you for visiting Ya Ya’s Scoop Shack! Goodbye! 👋");
+                    System.out.println(Order.PINK + "Thank you for visiting Ya Ya’s Scoop Shack! Goodbye! 👋" + Order.RESET);
                     running = false;
                 }
                 default -> System.out.println("⚠️ Invalid choice. Please enter 1 or 0.");
@@ -36,7 +36,7 @@ public class Main {
         boolean ordering = true;
 
         while (ordering) {
-            System.out.println("\n=== ORDER MENU ===");
+            System.out.println(Order.CYAN + "\n=== ORDER SCREEN ===" + Order.RESET);
             System.out.println("1) Add Item (Ice Cream)");
             System.out.println("2) Add Drink");
             System.out.println("3) Add Main Side");
@@ -66,7 +66,7 @@ public class Main {
 
     // === Add Ice Cream Item ===
     public static void addItem(Order order, Scanner scanner) {
-        System.out.println("\n=== Add Item (Ice Cream) ===");
+        System.out.println(Order.PINK + "\n=== Add Ice Cream ===" + Order.RESET);
 
         String flavor = ConsoleHelper.readString(scanner,
                 "Enter flavor (Vanilla Bean, Chocolate Fudge, Strawberry Swirl, Mint Chocolate Chip): ");
@@ -106,25 +106,25 @@ public class Main {
         }
 
         order.addIceCream(iceCream);
-        System.out.println("✅ Item added to your order!");
+        System.out.println(Order.PINK + "✅ Item added to your order!" + Order.RESET);
         order.displayOrder();
     }
 
     // === Add Drink ===
     public static void addDrink(Order order, Scanner scanner) {
-        System.out.println("\n=== Add Drink ===");
+        System.out.println(Order.CYAN + "\n=== Add Drink ===" + Order.RESET);
         Drink.showDrinkMenu();
         String drinkName = ConsoleHelper.readString(scanner, "Enter drink: ");
         String size = ConsoleHelper.readString(scanner, "Enter size (Small, Medium, Large): ");
         double price = Drink.getPriceFor(drinkName, size);
         order.addDrink(new Drink(drinkName, size, price));
-        System.out.println("✅ Drink added to your order!");
+        System.out.println(Order.CYAN + "✅ Drink added to your order!" + Order.RESET);
         order.displayOrder();
     }
 
     // === Add Main Side (Cookie or Milkshake) ===
     public static void addMainSide(Order order, Scanner scanner) {
-        System.out.println("\n=== Add Main Side ===");
+        System.out.println(Order.CREAM + "\n=== Add Main Side ===" + Order.RESET);
         System.out.println("Available sides: Cookie, Milkshake");
         String sideType = ConsoleHelper.readString(scanner, "Enter main side type: ");
 
@@ -135,29 +135,26 @@ public class Main {
         }
     }
 
-    // === Add Cookie ===
     public static void addCookie(Order order, Scanner scanner) {
         Cookie.showCookieMenu();
         String type = ConsoleHelper.readString(scanner, "Enter cookie type: ");
-        String quantity = ConsoleHelper.readString(scanner, "Enter quantity (Each, Half Dozen, Dozen): ");
+        String quantity = ConsoleHelper.readString(scanner, "Enter quantity (Single, Half Dozen, Dozen): ");
         double price = Cookie.getPriceFor(type, quantity);
         order.addCookie(new Cookie(type, quantity, price));
-        System.out.println("✅ Cookie added to your order!");
+        System.out.println(Order.BROWN + "✅ Cookie added to your order!" + Order.RESET);
         order.displayOrder();
     }
 
-    // === Add Milkshake ===
     public static void addMilkshake(Order order, Scanner scanner) {
         Milkshake.showMilkshakeMenu();
         String flavor = ConsoleHelper.readString(scanner, "Enter milkshake flavor: ");
         String size = ConsoleHelper.readString(scanner, "Enter size (Small, Medium, Large): ");
         double price = Milkshake.getPriceFor(flavor, size);
         order.addMilkshake(new Milkshake(flavor, size, price));
-        System.out.println("✅ Milkshake added to your order!");
+        System.out.println(Order.CREAM + "✅ Milkshake added to your order!" + Order.RESET);
         order.displayOrder();
     }
 
-    // === Add Signature Item ===
     public static void addSignatureItem(Order order, Scanner scanner) {
         SignatureItem.showSignatureMenu();
         int choice = ConsoleHelper.readInt(scanner, "Enter signature item number: ");
@@ -169,13 +166,14 @@ public class Main {
                 item.customize(scanner);
             }
             order.addIceCream(item);
-            System.out.println("✅ Signature item added!");
+            System.out.println(Order.PINK + "✅ Signature item added!" + Order.RESET);
             order.displayOrder();
         } else {
             System.out.println("⚠️ Invalid choice for signature item.");
         }
     }
 }
+
 
 
 
