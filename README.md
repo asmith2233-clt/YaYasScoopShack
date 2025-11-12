@@ -70,7 +70,9 @@ ReceiptFileManager	Handles saving order receipts to files with proper formatting
 Getting Started
 Requirements
 
-Java 17+
+UML Diagram:
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1d756e92-3d60-47b2-87bf-4df596d91144" />
+
 
 Console/Terminal that supports ANSI colors (optional for color-coded output)
 
