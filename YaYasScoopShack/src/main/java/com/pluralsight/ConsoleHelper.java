@@ -24,7 +24,7 @@ public class ConsoleHelper {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
             if (!input.isEmpty()) return input;
-            System.out.println("❗ Input cannot be empty.");
+            System.out.println(" Input cannot be empty.");
         }
     }
 
@@ -35,7 +35,7 @@ public class ConsoleHelper {
             String answer = scanner.nextLine().trim().toLowerCase();
             if (answer.equals("yes") || answer.equals("y")) return true;
             if (answer.equals("no") || answer.equals("n")) return false;
-            System.out.println("❗ Please answer yes or no.");
+            System.out.println(" Please answer yes or no.");
         }
     }
 
@@ -48,7 +48,7 @@ public class ConsoleHelper {
                 if (input.isEmpty()) continue;
                 return Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("❗ Please enter a valid amount (like 3.50).");
+                System.out.println("Please enter a valid amount (like 3.50).");
             }
         }
     }

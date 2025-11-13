@@ -13,25 +13,38 @@ public class ReceiptFileManager {
 
         try (FileWriter writer = new FileWriter(filename)) {
 
-            // Header
+
+// INTERESTING PIECE OF CODE
+// I remembered seeing this in somebody else's code last capstone and applied it to mine
+// This section generates a nicely formatted receipt for an order.
+// It writes the receipt to a writer (likely a PrintWriter or BufferedWriter), including
+// a header, date & time, items ordered, and the total cost.
+// -----------------------------
+
+// Header
             writer.write("""
-                    ╔════════════════════════════════════════════╗
-                    ║         🍦  YA YA’S SCOOP SHACK  🍦        ║
-                    ║        "Where Every Bite Feels Just Right" ║
-                    ╚════════════════════════════════════════════╝
+        ╔════════════════════════════════════════════╗
+        ║         🍦  YA YA’S SCOOP SHACK  🍦        ║
+        ║        "Where Every Bite Feels Just Right" ║
+        ╚════════════════════════════════════════════╝
 
-                    """);
-
-            // Date & Time
-            writer.write("Date: " + now.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")) + "\n");
-            writer.write("Time: " + now.format(DateTimeFormatter.ofPattern("hh:mm a")) + "\n");
+        """); // Using triple quotes """ to write multiple lines at once
+// -----------------------------
+// Date & Time Section
+// Writing the current date and time on the receipt.
+// 'now' is assumed to be a LocalDateTime object representing current time.
+            writer.write("Date: " + now.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")) + "\n"); // Example: "November 12, 2025"
+            writer.write("Time: " + now.format(DateTimeFormatter.ofPattern("hh:mm a")) + "\n"); // Example: "01:45 PM"
+            writer.write("──────────────────────────────────────────\n"); // Decorative separator
+            writer.write("Order Receipt\n"); // Title for the order section
             writer.write("──────────────────────────────────────────\n");
-            writer.write("Order Receipt\n");
-            writer.write("──────────────────────────────────────────\n");
 
-            // Items
+// -----------------------------
+// Items Section
+// Looping through all items in the order and writing them to the receipt.
+// Each item is formatted and stripped of any color codes ** Not paying for printed colors on the receipts !!
             for (IceCream i : order.getIceCreams())
-                writer.write(formatLine(stripColors(i.getDescription())));
+                writer.write(formatLine(stripColors(i.getDescription()))); // formatLine aligns text nicely
             for (Drink d : order.getDrinks())
                 writer.write(formatLine(stripColors(d.getDescription())));
             for (Cookie c : order.getCookies())
@@ -39,6 +52,9 @@ public class ReceiptFileManager {
             for (Milkshake m : order.getMilkshakes())
                 writer.write(formatLine(stripColors(m.getDescription())));
 
+// -----------------------------
+// Total Section
+// Writes the total cost of the order, formatted to 2 decimal places with a dollar sign.
             writer.write("──────────────────────────────────────────\n");
             writer.write(String.format("%-35s %8s%n", "TOTAL:", String.format("$%.2f", order.calculateTotal())));
             writer.write("──────────────────────────────────────────\n\n");
