@@ -13,7 +13,7 @@ public class ConsoleHelper {
                 if (input.isEmpty()) continue;
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("❗ Invalid number, try again.");
+                System.out.println(" Invalid number, try again.");
             }
         }
     }

@@ -36,7 +36,7 @@ public class Drink extends Item {
                     default -> 2.50;
                 };
             default:
-                return 2.00; // fallback price
+                return 2.50; // fallback price
         }
     }
 
