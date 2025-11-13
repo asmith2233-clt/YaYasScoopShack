@@ -182,7 +182,7 @@ public class UserInterface {
     }
 
     private void checkout() {
-        printSlow(CREAM + "\n🧾 Checking out..." + RESET, 25);
+        printSlow(CREAM + "\n Checking out..." + RESET, 25);
         order.checkout(scanner);
     }
 
