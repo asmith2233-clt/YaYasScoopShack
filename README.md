@@ -1,6 +1,6 @@
+![IceCreamGIF](https://github.com/user-attachments/assets/8b3f1d63-13b3-41e6-963d-9427954f77b3)
 Ya Ya’s Scoop Shack – Order & Receipt Application
 Project Description
-![IceCreamGIF](https://github.com/user-attachments/assets/8b3f1d63-13b3-41e6-963d-9427954f77b3)
 
 The Ya Ya’s Scoop Shack app is a program that helps users manage and track orders for an ice cream shop. It allows users to:
 
@@ -60,8 +60,12 @@ Technologies Used
 Problem: Reciept Printing this is what it looked like before I changed it 
 <img width="456" height="230" alt="image" src="https://github.com/user-attachments/assets/24220397-5daf-473f-bde1-1ddc8aab3163" /> 
 
-Code that I loved would be adding color to my project giving real ice cream vibes:
-<img width="542" height="171" alt="image" src="https://github.com/user-attachments/assets/40041423-4e5e-434f-bb4e-525a2df03c42" />
+Code that I loved would be adding color to my project giving real ice cream vibes: 
+Link that helped with me color https://codemia.io/knowledge-hub/path/how_to_print_color_in_console_using_systemoutprintln
+
+<img width="542" height="171" alt="image" src="https://github.com/user-attachments/assets/40041423-4e5e-434f-bb4e-525a2df03c42" /> 
+
+UML Diagram: 
 
 
 
