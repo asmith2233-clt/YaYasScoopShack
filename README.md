@@ -37,6 +37,10 @@ Example Receipt Output:
 
 <img width="973" height="557" alt="image" src="https://github.com/user-attachments/assets/3a38a5c6-ac16-476e-b868-4634513835c0" />
 
+Printing Slow I aslo love how this look when I run my code:
+<img width="769" height="78" alt="image" src="https://github.com/user-attachments/assets/3b3e3de1-8f33-4e1f-b32e-36b3eead95f6" />
+
+
 
 Interesting Piece of Code
 
