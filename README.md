@@ -70,6 +70,7 @@ Link that helped with me color https://codemia.io/knowledge-hub/path/how_to_prin
 <img width="542" height="171" alt="image" src="https://github.com/user-attachments/assets/40041423-4e5e-434f-bb4e-525a2df03c42" /> 
 
 UML Diagram: 
+<img width="1051" height="968" alt="image" src="https://github.com/user-attachments/assets/190a6f2b-4d82-473b-9e82-11f9dfcce041" />
 
 
 
