@@ -30,7 +30,7 @@ public class ReceiptFileManager {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String filename = "Receipt_" + timestamp + ".txt";
 
-        printReceipt(items, prices, subtotal, filename);
+        printReceipt(items, prices, subtotal, filename, order);
 
         System.out.println("🧾 Receipt saved to " + filename);
     }
@@ -52,7 +52,9 @@ public class ReceiptFileManager {
     }
 
     // === Print receipt to its own file ===
-    private static void printReceipt(List<String> items, List<Double> prices, double subtotal, String filename) {
+    private static void printReceipt(List<String> items, List<Double> prices, double subtotal,
+                                     String filename, Order order) {
+
         File file = new File(filename);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(file, false))) {
@@ -64,8 +66,46 @@ public class ReceiptFileManager {
             writer.println(String.format("%-30s %s", "Item", "Price"));
             writer.println("---------------------------------------");
 
+            int iceCreamIndex = 0; // NEW counter added for topping tracking
+
             for (int i = 0; i < items.size(); i++) {
+
                 writer.printf("%-30s $%.2f%n", items.get(i), prices.get(i));
+
+                // ===== TOPPING DETAILS (Added Section) =====
+                if (items.get(i).toLowerCase().contains("ice cream")) {
+
+                    var iceCream = order.getIceCreams().get(iceCreamIndex);
+                    iceCreamIndex++;
+
+                    // Regular toppings
+                    if (!iceCream.getRegularToppings().isEmpty()) {
+                        writer.printf("   - Regular Toppings (%d × $0.30)%n",
+                                iceCream.getRegularToppings().size());
+                        for (String t : iceCream.getRegularToppings()) {
+                            writer.println("      • " + t);
+                        }
+                    }
+
+                    // Premium toppings
+                    if (!iceCream.getPremiumToppings().isEmpty()) {
+                        writer.printf("   - Premium Toppings (%d × $0.75)%n",
+                                iceCream.getPremiumToppings().size());
+                        for (String t : iceCream.getPremiumToppings()) {
+                            writer.println("      • " + t);
+                        }
+                    }
+
+                    // Sauces
+                    if (!iceCream.getCondimentSauces().isEmpty()) {
+                        writer.printf("   - Sauces (%d × $0.50)%n",
+                                iceCream.getCondimentSauces().size());
+                        for (String s : iceCream.getCondimentSauces()) {
+                            writer.println("      • " + s);
+                        }
+                    }
+                }
+                // ===== END OF ADDED SECTION =====
             }
 
             writer.println("---------------------------------------");
@@ -95,37 +135,36 @@ public class ReceiptFileManager {
             System.out.println("Error writing receipt: " + e.getMessage());
         }
     }
- //Interesting Piece of Code
+
+    //Interesting Piece of Code
     // === Auto-open the saved receipt file ==
-// This method tries to automatically open a saved receipt file
-// using the system's default application for text files.
+    // Automatically opens the saved receipt file using the system's default text editor
     private static void openReceiptFile(File file) {
         try {
-            // Get the operating system name (e.g., "Windows 10", "Mac OS X", "Linux")
+            // Get the name of the operating system (ex: "Windows 10", "Mac OS X", "Linux")
             String os = System.getProperty("os.name").toLowerCase();
 
-            // Check if the OS is Windows
+            // --- WINDOWS ---
+            // If the OS name contains "win", we assume it is a Windows system
             if (os.contains("win")) {
-                // On Windows, use Notepad to open the file
-                // ProcessBuilder launches external processes/commands
+                // Use Notepad to open the file
                 new ProcessBuilder("notepad.exe", file.getAbsolutePath()).start();
 
-                // Check if the OS is macOS
+                // --- MACOS ---
             } else if (os.contains("mac")) {
-                // On Mac, use the 'open' command which opens files with the default app
+                // "open" launches files using the default Mac application
                 new ProcessBuilder("open", file.getAbsolutePath()).start();
 
-                // If not Windows or Mac, assume Linux/Unix
+                // --- LINUX / UNIX ---
             } else {
-                // On Linux, use 'xdg-open' to open the file with the default app
+                // "xdg-open" opens files using the default Linux text editor
                 new ProcessBuilder("xdg-open", file.getAbsolutePath()).start();
             }
 
-            // Catch any IOException that may occur when trying to start the process
         } catch (IOException e) {
-            // If something goes wrong (e.g., file doesn't exist, command not found), print an error
+            // If anything goes wrong (file missing, OS command unavailable, etc.)
             System.out.println("Could not automatically open the receipt file.");
         }
     }
-}
 
+}

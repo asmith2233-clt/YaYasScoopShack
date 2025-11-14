@@ -5,13 +5,23 @@ import java.util.Scanner;
 /**
  * Animated & color-coded User Interface for Ya Ya’s Scoop Shack
  * “Where Every Bite Feels Just Right.”
+ *
+ * Responsibilities:
+ * - Display menus to the user
+ * - Handle user input
+ * - Add items (Ice Cream, Drinks, Cookies, Milkshakes, Signature Items) to orders
+ * - Checkout and cancel orders
+ * - Use colored output and slow-printing animation
  */
 public class UserInterface {
 
-    private final Scanner scanner = new Scanner(System.in); // Scanner for user input
-    private final Order order = new Order(); // Single order instance
+    // Scanner object to read user input from console
+    private final Scanner scanner = new Scanner(System.in);
 
-    // === ANSI Colors for console styling ===
+    // Current order being built
+    private final Order order = new Order();
+
+    // ANSI escape codes for colored terminal text
     public static final String RESET = "\u001B[0m";
     public static final String PINK = "\u001B[38;5;218m";
     public static final String MINT = "\u001B[38;5;121m";
@@ -20,32 +30,38 @@ public class UserInterface {
     public static final String BLUE = "\u001B[38;5;117m";
 
     /**
-     * Starts the user interface.
-     * Displays welcome message and main menu.
+     * Display the main user interface
+     * - Animated welcome messages
+     * - Main loop until user exits
      */
     public void display() {
+        // Slow-print welcome messages with color
         printSlow(PINK + "\n🍦 Welcome to Ya Ya’s Scoop Shack 🍦\n" + RESET, 35);
         printSlow(MINT + "Where Every Bite Feels Just Right.\n" + RESET, 25);
 
         boolean running = true;
+
         while (running) {
-            showMainMenu();
+            showMainMenu(); // Show the main menu options
             int choice = ConsoleHelper.readInt(scanner, MINT + "Enter your choice: " + RESET);
 
+            // Handle user's main menu choice
             switch (choice) {
                 case 1 -> startNewOrder(); // Start a new order
-                case 2 -> viewSignatureMenu(); // Show signature items
-                case 0 -> { // Exit the program
+                case 2 -> viewSignatureMenu(); // View signature items
+                case 0 -> { // Exit the application
                     printSlow(PINK + "\n👋 Thanks for visiting Ya Ya’s Scoop Shack!" + RESET, 25);
                     printSlow(CREAM + "Hope your day is sprinkled with sweetness!\n" + RESET, 20);
-                    running = false;
+                    running = false; // Stops the main loop
                 }
                 default -> System.out.println(BROWN + "⚠️ Invalid choice, please try again.\n" + RESET);
             }
         }
     }
 
-    // Displays the main menu
+    /**
+     * Display the main menu options to the user
+     */
     private void showMainMenu() {
         System.out.println(BLUE + "\n╔════════════════════════╗" + RESET);
         System.out.println(BLUE + "║      MAIN MENU         ║" + RESET);
@@ -55,22 +71,27 @@ public class UserInterface {
         System.out.println(PINK + "0)" + RESET + " Exit");
     }
 
-    // Starts a new order process
+    /**
+     * Start a new order
+     * - Displays order menu
+     * - Handles adding items or checkout
+     * - Allows cancellation
+     */
     private void startNewOrder() {
         boolean ordering = true;
         printSlow(MINT + "\nStarting a new order..." + RESET, 30);
 
         while (ordering) {
-            showOrderMenu();
+            showOrderMenu(); // Show menu specific to the order
             int choice = ConsoleHelper.readInt(scanner, MINT + "Enter your choice: " + RESET);
 
             switch (choice) {
-                case 1 -> addIceCream();       // Add ice cream
-                case 2 -> addDrink();          // Add drink
-                case 3 -> addCookie();         // Add cookie
-                case 4 -> addMilkshake();      // Add milkshake
-                case 5 -> addSignatureItem();  // Add signature item
-                case 6 -> checkout();          // Checkout
+                case 1 -> addIceCream(); // Add ice cream
+                case 2 -> addDrink(); // Add drink
+                case 3 -> addCookie(); // Add Side
+                case 4 -> addMilkshake(); // Add Side
+                case 5 -> addSignatureItem(); // Add signature item
+                case 6 -> checkout(); // Checkout current order
                 case 0 -> { // Cancel current order
                     order.cancelOrder();
                     ordering = false;
@@ -80,7 +101,9 @@ public class UserInterface {
         }
     }
 
-    // Shows the order menu
+    /**
+     * Show order menu options to user
+     */
     private void showOrderMenu() {
         System.out.println(PINK + "\n🍧 ORDER MENU 🍧" + RESET);
         System.out.println("1) Add Ice Cream");
@@ -92,14 +115,23 @@ public class UserInterface {
         System.out.println("0) Cancel Order");
     }
 
-    // Add ice cream to the order
+    /**
+     * Add an ice cream to the current order
+     * Includes handling:
+     * - Flavors
+     * - Sizes
+     * - Premium toppings (+$0.75 each)
+     * - Regular toppings (+$0.30 each)
+     * - Condiment sauces (+$0.50 each)
+     */
     private void addIceCream() {
         printSlow(PINK + "\n🍨 Add Ice Cream" + RESET, 20);
         System.out.println("Available flavors: Vanilla Bean, Chocolate Fudge, Strawberry Swirl, Mint Chocolate Chip");
+
         String flavor = ConsoleHelper.readString(scanner, "Enter flavor: ");
         String size = ConsoleHelper.readString(scanner, "Enter size (Cup, Pint, Quart): ");
 
-        // Determine price based on size
+        // Determine base price based on size
         double price = switch (size.toLowerCase()) {
             case "pint" -> 6.50;
             case "quart" -> 8.50;
@@ -108,117 +140,121 @@ public class UserInterface {
 
         IceCream iceCream = new IceCream(flavor, size, price);
 
-        // Add premium toppings if customer wants
+        // PREMIUM TOPPINGS section
         System.out.println("\n✨ Premium Toppings ($0.75 each): Cookie Dough Chunks, Brownie Bites, Cheesecake Bits, Caramel Swirl");
         if (ConsoleHelper.readYesNo(scanner, "Add premium toppings?")) {
             while (true) {
                 String topping = ConsoleHelper.readString(scanner, "Enter topping (or 'done'): ");
                 if (topping.equalsIgnoreCase("done")) break;
-                iceCream.addPremiumTopping(topping, 0.75);
+                iceCream.addPremiumTopping(topping, 0.75); // Add topping and price
             }
         }
 
-        // Add regular toppings
-        System.out.println("\n🍒 Regular Toppings (Free): Sprinkles, Whipped Cream, Cherries, Peanuts, Marshmallows");
+        // REGULAR TOPPINGS section
+        System.out.println("\n🍒 Regular Toppings ($0.30 each): Rainbow Sprinkles, Chocolate Sprinkles, Shredded Coconut, Crushed Oreos, Sugared Strawberries, Whipped Cream, Cherries, Peanuts, Marshmallows");
         if (ConsoleHelper.readYesNo(scanner, "Add regular toppings?")) {
             while (true) {
                 String topping = ConsoleHelper.readString(scanner, "Enter topping (or 'done'): ");
                 if (topping.equalsIgnoreCase("done")) break;
-                iceCream.addRegularTopping(topping);
+                iceCream.addRegularTopping(topping, .30); // Add topping and price
             }
         }
 
-        order.addIceCream(iceCream);
+        // CONDIMENT SAUCES section
+        System.out.println("\n🍯 Condiment Sauces ($0.50 each): Hot Fudge, Caramel Sauce, Strawberry Sauce, Butterscotch Sauce, Peanut Butter Sauce, Marshmallow Cream Sauce");
+        if (ConsoleHelper.readYesNo(scanner, "Add condiment sauces?")) {
+            while (true) {
+                String sauce = ConsoleHelper.readString(scanner, "Enter sauce (or 'done'): ");
+                if (sauce.equalsIgnoreCase("done")) break;
+                iceCream.addCondimentSauce(sauce, 0.50); // Add sauce and price
+            }
+        }
+
+        order.addIceCream(iceCream); // Add ice cream to order
         printSlow(MINT + "✅ Ice cream added to your order!" + RESET, 20);
-        order.displayOrder();
+        order.displayOrder(); // Show updated order
     }
 
-    // Method to add a drink to the current order
+    /**
+     * Add a drink to the current order
+     * - Handles sodas, iced coffee, and other drinks
+     * - Adjusts drink name and flavor based on selection
+     */
     private void addDrink() {
-        // Print a header for the drink section with blue color and a slight delay for animation
         printSlow(BLUE + "\n🥤 Add Drink" + RESET, 20);
-
-        // Display the drink menu (static method in Drink class)
         Drink.showDrinkMenu();
 
-        // Prompt the user to enter the name of the drink
-        // ConsoleHelper.readString(scanner, prompt) reads user input as a String
         String drink = ConsoleHelper.readString(scanner, "Enter drink name: ");
 
-        // Check if the user selected a soda
+        // Special handling for soda
         if (drink.equalsIgnoreCase("soda")) {
-            // If the user typed "soda", show available soda flavors
             System.out.println("Available soda flavors: Coke, Sprite, Diet Coke, Fanta");
-
-            // Prompt the user to select a soda flavor
             String sodaType = ConsoleHelper.readString(scanner, "Select soda type: ");
-
-            // Combine the chosen flavor with "Soda" to create a full drink name
-            // Example: "Coke" -> "Coke Soda"
             drink = sodaType + " Soda";
-
-            // Check if the drink is some type of iced beverage (like iced coffee)
-        } else if (drink.toLowerCase().contains("iced")) {
-            // This handles various inputs like "Iced Coffee", "iced coffee", etc.
-
-            // Show available iced coffee flavors
+        }
+        // Special handling for iced coffee
+        else if (drink.toLowerCase().contains("iced")) {
             System.out.println("Available iced coffee flavors: Regular, Caramel, Mocha, Vanilla");
-
-            // Prompt the user to select one flavor
             String coffeeType = ConsoleHelper.readString(scanner, "Select coffee flavor: ");
-
-            // Combine the flavor with "Iced Coffee" to form the full drink name
-            // Example: "Caramel" -> "Caramel Iced Coffee"
             drink = coffeeType + " Iced Coffee";
         }
 
-        // At this point, 'drink' variable now contains the exact name of the drink
-        // e.g., "Coke Soda" or "Caramel Iced Coffee"
-
-
-
-    String size = ConsoleHelper.readString(scanner, "Enter size (Small, Medium, Large): ");
+        String size = ConsoleHelper.readString(scanner, "Enter size (Small, Medium, Large): ");
         double price = Drink.getPriceFor(drink, size);
+
         order.addDrink(new Drink(drink, size, price));
         printSlow(MINT + "✅ Drink added!" + RESET, 20);
         order.displayOrder();
     }
 
-    // Add a cookie
+    /**
+     * Add cookies to the current order
+     * - Handles type and quantity
+     */
     private void addCookie() {
         printSlow(BROWN + "\n🍪 Add Cookie" + RESET, 20);
         Cookie.showCookieMenu();
+
         String type = ConsoleHelper.readString(scanner, "Enter cookie type: ");
         String quantity = ConsoleHelper.readString(scanner, "Enter quantity (Each, Half Dozen, Dozen): ");
         double price = Cookie.getPriceFor(type, quantity);
+
         order.addCookie(new Cookie(type, quantity, price));
         printSlow(MINT + "✅ Cookie added!" + RESET, 20);
         order.displayOrder();
     }
 
-    // Add a milkshake
+    /**
+     * Add milkshake to the current order
+     */
     private void addMilkshake() {
         printSlow(CREAM + "\n🥤 Add Milkshake" + RESET, 20);
         Milkshake.showMilkshakeMenu();
+
         String flavor = ConsoleHelper.readString(scanner, "Enter flavor: ");
         String size = ConsoleHelper.readString(scanner, "Enter size (Small, Medium, Large): ");
         double price = Milkshake.getPriceFor(flavor, size);
+
         order.addMilkshake(new Milkshake(flavor, size, price));
         printSlow(MINT + "✅ Milkshake added!" + RESET, 20);
         order.displayOrder();
     }
 
-    // Add a signature item
+    /**
+     * Add a signature item to the order
+     * - Optionally allows customization
+     */
     private void addSignatureItem() {
         SignatureItem.showSignatureMenu();
         int choice = ConsoleHelper.readInt(scanner, "Enter your choice: ");
         SignatureItem item = SignatureItem.createSignature(choice);
+
         if (item == null) {
             System.out.println(BROWN + "⚠️ Invalid choice." + RESET);
             return;
         }
 
-        // Optional customization
+        // Allow user to customize toppings or make it specialized
         if (ConsoleHelper.readYesNo(scanner, "Would you like to customize it?"))
             item.customize(scanner);
 
@@ -227,31 +263,43 @@ public class UserInterface {
         order.displayOrder();
     }
 
-    // View the signature item menu
+    /**
+     * View signature items (read-only)
+     */
     private void viewSignatureMenu() {
         System.out.println(PINK + "\n⭐ Signature Creations ⭐" + RESET);
         SignatureItem.showSignatureMenu();
         System.out.println("Select them from the Order Menu to purchase.\n");
     }
 
-    // Checkout process
+    /**
+     * Checkout the current order
+     */
     private void checkout() {
         printSlow(CREAM + "\n Checking out..." + RESET, 25);
-        order.checkout(scanner); // calls Order.checkout()
+        order.checkout(scanner);
     }
 
-    // Helper for animated text output
+// Prints text one character at a time, creating a "typing" effect
     private void printSlow(String text, int delay) {
+
+        // Loop through each character in the string
         for (char c : text.toCharArray()) {
+
+            // Print the character without moving to a new line
             System.out.print(c);
+
             try {
+                // Pause (sleep) for the specified number of milliseconds
+                // This controls how slow or fast the text prints
                 Thread.sleep(delay);
+
             } catch (InterruptedException e) {
+                // If another thread interrupts the sleep, restore interruption state
                 Thread.currentThread().interrupt();
             }
         }
+
         System.out.println();
     }
 }
-
-
