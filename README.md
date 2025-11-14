@@ -80,7 +80,10 @@ Packages: java.io, java.util, java.time
 
 File Type: .txt receipts
 
-Tools: IntelliJ IDEA / VS Code
+Tools? Supporting Cites: IntelliJ IDEA / VS Code
+https://www.oracle.com/
+https://www.w3schools.com/#gsc.tab=0
+
 
 Future Improvements
 
