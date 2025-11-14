@@ -1,120 +1,96 @@
-Ya Ya’s Scoop Shack
+![IceCreamGIF](https://github.com/user-attachments/assets/8b3f1d63-13b3-41e6-963d-9427954f77b3)
+Ya Ya’s Scoop Shack – Order & Receipt Application
+Project Description
 
-Slogan: “Where Every Bite Feels Just Right.”
+The Ya Ya’s Scoop Shack app is a program that helps users manage and track orders for an ice cream shop. It allows users to:
+
+Add ice cream, drinks, cookies, and milkshakes to an order
+
+Customize items with flavors, sizes, and toppings
+
+View the current order in a clear, color-coded format in the terminal
+
+Automatically generate a formatted receipt for each order
+
+Automatically open the receipt file after checkout
+
+This project simulates how a real ice cream shop could operate, giving owners a fun and interactive way to manage orders and receipts directly from the terminal.
+
+Application Screens
+Home Screen
+
+The main menu that appears when the application starts. Users can start a new order, view signature items, or exit the app.
+
+<img width="313" height="327" alt="image" src="https://github.com/user-attachments/assets/b67e1b18-524d-40a3-b984-246644779945" />
+
+
+Order Menu
+
+<img width="243" height="260" alt="image" src="https://github.com/user-attachments/assets/252c8b91-f8c3-4b72-aa29-d259e3ad924a" />
+
+
+Receipt Generation
+
+After checkout, a receipt is saved to a .txt file and automatically opened, showing all items with their prices, subtotal, tax, and total.
+
+Example Receipt Output:
+
+<img width="973" height="557" alt="image" src="https://github.com/user-attachments/assets/3a38a5c6-ac16-476e-b868-4634513835c0" />
+
+Printing Slow I aslo love how this look when I run my code:
+<img width="769" height="78" alt="image" src="https://github.com/user-attachments/assets/3b3e3de1-8f33-4e1f-b32e-36b3eead95f6" />
+
+
+
+Interesting Piece of Code
+
+One of the most exciting features is how the app automatically opens the saved receipt file after checkout. This gives users a seamless, real-world experience as if a physical receipt had printed.
+
+<img width="783" height="388" alt="image" src="https://github.com/user-attachments/assets/d06e8f0c-cacc-4980-9d41-7da33f7490e3" />
+
+
+Why it’s interesting:
+
+Detects the operating system and opens the receipt file with the correct application
+
+Works on Windows, macOS, and Linux automatically
+
+Enhances user experience by showing the receipt immediately after checkout
+
+Demonstrates practical use of ProcessBuilder to interact with the operating system
+
+Technologies Used
+
+Problem: Reciept Printing this is what it looked like before I changed it 
+<img width="456" height="230" alt="image" src="https://github.com/user-attachments/assets/24220397-5daf-473f-bde1-1ddc8aab3163" /> 
+
+Code that I loved would be adding color to my project giving real ice cream vibes: 
+Link that helped with me color https://codemia.io/knowledge-hub/path/how_to_print_color_in_console_using_systemoutprintln
+
+<img width="542" height="171" alt="image" src="https://github.com/user-attachments/assets/40041423-4e5e-434f-bb4e-525a2df03c42" /> 
+
+UML Diagram: 
+<img width="1051" height="968" alt="image" src="https://github.com/user-attachments/assets/190a6f2b-4d82-473b-9e82-11f9dfcce041" />
+
+
+
 Language: Java
-Type: Console-based Interactive Ice Cream Ordering System
 
-Project Overview
+Packages: java.io, java.util, java.time
 
-This is a console-based Java application simulating an ice cream shop called Ya Ya’s Scoop Shack. The program allows users to:
+File Type: .txt receipts
 
-Start a new order
-
-Add ice cream, drinks, cookies, milkshakes, or signature items
-
-Customize toppings and sizes
-
-Checkout and generate a formatted receipt
-
-View signature items without ordering
-
-The application uses ANSI color codes to create a visually appealing, retro-style console interface.
-
-Features
-1. Interactive Menu
-
-Color-coded and animated menus
-
-Users can navigate main menu and order menu
-
-Options include starting a new order, viewing signature items, and exiting
-
-2. Order Management
-
-Add multiple items (ice cream, drinks, cookies, milkshakes)
-
-Customize toppings (regular & premium) and sizes
-
-Specialized items add $1.00 to the total
-
-Cancel an order anytime before checkout
-
-3. Signature Items
-
-Pre-defined popular items (e.g., Banana Split Boat, Strawberry Crunch Milkshake, Mint Chocolate Magic)
-
-Can be further customized with toppings
-
-Price automatically adjusted for premium toppings
-
-4. Receipt Generation
-
-Saves a formatted receipt to a .txt file
-
-Includes date, time, itemized order, total price, and shop branding
-
-ANSI colors removed for clarity in file output
-
-Classes
-Class	Description
-Main	Launches the program and starts the user interface
-UserInterface	Handles all console interactions, menus, and input
-Order	Manages all items in an order and calculates totals
-IceCream	Represents ice cream items, sizes, toppings, and specialized status
-SignatureItem	Extends IceCream for pre-defined signature creations
-Drink	Represents drinks with size-based pricing
-Cookie	Represents cookies and pricing by quantity (not shown in snippet)
-Milkshake	Represents milkshakes with size-based pricing (not shown in snippet)
-ConsoleHelper	Utility class for safe user input (integers, doubles, yes/no, strings)
-ReceiptFileManager	Handles saving order receipts to files with proper formatting
-Getting Started
-Requirements
-
-UML Diagram:
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1d756e92-3d60-47b2-87bf-4df596d91144" />
+Tools? Supporting Cites: IntelliJ IDEA / VS Code
+https://www.oracle.com/
+https://www.w3schools.com/#gsc.tab=0
 
 
-Console/Terminal that supports ANSI colors (optional for color-coded output)
+Future Improvements
 
-Running the Program
-
-Compile the project:
-
-javac com/pluralsight/*.java
-
-
-Run the program:
-
-java com.pluralsight.Main
-
-Usage Example
-🍦 Welcome to Ya Ya’s Scoop Shack 🍦
-Where Every Bite Feels Just Right.
-
-MAIN MENU
-1) Start a New Order
-2) View Signature Items
-0) Exit
-Enter your choice: 1
-
-
-Users can then add ice cream, drinks, cookies, milkshakes, or signature items.
-
-Customization prompts appear for toppings and specializations.
-
-Checkout generates a receipt in the project folder.
-
-Notes
-
-Premium toppings add $0.75 by default.
-
-Specialized items add $1.00 to the total.
-
-Receipts are saved in the format receipt_YYYYMMDD_HHMMSS.txt.
-
-Console uses colors for fun retro style; receipts are plain text.
+One improvement would be to implement an automatic running total and order summary in the terminal while building the order. This would allow the shop owner to see totals in real-time before generating a receipt.
 
 Author
 
-Ayanna Smith
-Ya Ya’s Scoop Shack Project – Java Capstone
+Ayanna Smith — Student Project
+
+"I created this ice cream order and receipt app as a step toward running the kind of shop I hope to own one day."
